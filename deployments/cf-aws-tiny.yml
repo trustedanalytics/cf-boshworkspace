@@ -110,3 +110,7 @@ meta:
     services:        medium # MARKER_FOR_POOL_PROVISION
     health:          medium # MARKER_FOR_POOL_PROVISION
     runner:          runner # MARKER_FOR_POOL_PROVISION
+  uaa_signing_key: |
+    UAAC_PRV_KEY
+  uaa_verification_key: |
+    UAAC_PUB_KEY
