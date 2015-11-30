@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/trustedanalytics/cf-boshworkspace.svg)](https://travis-ci.org/trustedanalytics/cf-boshworkspace)
 [![Dependency Status](https://gemnasium.com/trustedanalytics/cf-boshworkspace.svg)](https://gemnasium.com/trustedanalytics/cf-boshworkspace)
 
 cf-boshworkspace
