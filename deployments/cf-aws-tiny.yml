@@ -6,9 +6,6 @@ releases:
   - name: cf
     version: 210 # DEFAULT_CF_RELEASE_VERSION
     git: https://github.com/cloudfoundry/cf-release.git
-  - name: cf-haproxy
-    version: 2 # DEFAULT_CFHAPROXY_RELEASE_VERSION
-    git: https://github.com/cloudfoundry-community/cf-haproxy-boshrelease.git
   - name: uaa-intel
     version: 4
     git: https://github.com/trustedanalytics/uaa-intel-boshrelease.git
@@ -26,7 +23,6 @@ templates:
   - cf-no-ssl.yml
   - cf-secrets.yml
   - tiny/cf-use-nfs.yml
-  - tiny/cf-use-haproxy.yml
   - cf-networking.yml
   - cf-project-login.yml
   - tiny/cf-runners-aws-tiny.yml
@@ -83,10 +79,6 @@ meta:
       net_id: LB_SUBNET1
   environment: cf-aws-tiny
   instances:
-    # Load balancers
-    private_haproxy_z1: 1 # MARKER_FOR_PROVISION
-    public_haproxy_z1:  1 # MARKER_FOR_PROVISION
-
     # Primary AZ nodes
     backbone_z1:  1 # MARKER_FOR_PROVISION
     api_z1:       1 # MARKER_FOR_PROVISION
@@ -104,8 +96,6 @@ meta:
   job_pools:
     backbone:        large  # MARKER_FOR_POOL_PROVISION
     data:            large  # MARKER_FOR_POOL_PROVISION
-    public_haproxy:  small  # MARKER_FOR_POOL_PROVISION
-    private_haproxy: small  # MARKER_FOR_POOL_PROVISION
     api:             medium # MARKER_FOR_POOL_PROVISION
     services:        medium # MARKER_FOR_POOL_PROVISION
     health:          medium # MARKER_FOR_POOL_PROVISION

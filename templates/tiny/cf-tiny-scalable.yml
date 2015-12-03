@@ -9,7 +9,6 @@ meta:
 
   release:
     cf: cf
-    haproxy: cf-haproxy
 
   domain: (( merge ))
   app_domains: (( merge ))
@@ -21,7 +20,6 @@ meta:
     org: (( merge || "smoke-tests" ))
     space: (( merge || "smoke-tests" ))
 
-  ha_proxy: (( merge ))
   floating_static_ips: (( merge ))
   networks:
     z1:
@@ -58,14 +56,6 @@ meta:
     release: (( meta.release.cf ))
   - name: metron_agent
     release: (( meta.release.cf ))
-  - name: consul_agent
-    release: (( meta.release.cf ))
-
-  ha_proxy_templates:
-  - name: metron_agent
-    release: (( meta.release.cf ))
-  - name: haproxy
-    release: (( meta.release.haproxy ))
   - name: consul_agent
     release: (( meta.release.cf ))
 
@@ -114,8 +104,6 @@ meta:
   instances:
     backbone_z1:             (( merge || 1 ))
     backbone_z2:             (( merge || 0 ))
-    public_haproxy_z1:       (( merge || 1 ))
-    private_haproxy_z1:      (( merge || 0 ))
     api_z1:                  (( merge || 1 ))
     api_z2:                  (( merge || 0 ))
     services_z1:             (( merge || 1 ))
@@ -128,8 +116,6 @@ meta:
   job_pools:
     backbone:        (( merge || "large" ))
     data:            (( merge || "large" ))
-    public_haproxy:  (( merge || "small" ))
-    private_haproxy: (( merge || "small" ))
     api:             (( merge || "medium" ))
     services:        (( merge || "medium" ))
     health:          (( merge || "medium" ))
@@ -222,37 +208,6 @@ jobs:
       metron_agent:
         zone: z2
 
-  - name: public_haproxy_z1
-    instances: (( meta.instances.public_haproxy_z1 ))
-    resource_pool: (( meta.job_pools.public_haproxy "_z1" ))
-    templates: (( meta.ha_proxy_templates ))
-    networks:
-      - name: floating
-        static_ips: (( meta.floating_static_ips ))
-      - name: lb1
-        default: [dns, gateway]
-        static_ips: (( static_ips(0, 11, 12, 13, 14, 15) ))
-    properties:
-      <<: (( merge ))
-      networks: (( meta.networks.z1 ))
-      metron_agent:
-        zone: z1
-  - name: private_haproxy_z1
-    instances: (( meta.instances.private_haproxy_z1 ))
-    resource_pool: (( meta.job_pools.private_haproxy "_z1" ))
-    templates: (( meta.ha_proxy_templates ))
-    networks:
-      - name: lb1
-        default: [dns, gateway]
-        static_ips: (( static_ips(31, 32, 33, 34, 35, 36) ))
-    properties:
-      <<: (( merge ))
-      networks: (( meta.networks.z1 ))
-      ha_proxy:
-        internal_only_domains: []
-      metron_agent:
-        zone: z1
-
   - name: api_z1
     instances: (( meta.instances.api_z1 ))
     resource_pool: (( meta.job_pools.api "_z1" ))
@@ -270,8 +225,6 @@ jobs:
           services:
             - cloud_controller_ng
       networks: (( meta.networks.z1 ))
-      ha_proxy:
-        ssl_pem: (( meta.ha_proxy.ssl_pem ))
       metron_agent:
         zone: z1
   - name: api_z2
@@ -291,8 +244,6 @@ jobs:
           services:
             - cloud_controller_ng
       networks: (( meta.networks.z2 ))
-      ha_proxy:
-        ssl_pem: (( meta.ha_proxy.ssl_pem ))
       metron_agent:
         zone: z2
 
@@ -398,16 +349,6 @@ properties:
   disk_quota_enabled: true
 
   request_timeout_in_seconds: 900
-
-  ha_proxy:
-    <<: (( merge ))
-    client_timeout: (( meta.ha_proxy.client_timeout || nil ))
-    server_timeout: (( meta.ha_proxy.server_timeout || nil ))
-    websocket_timeout: (( meta.ha_proxy.websocket_timeout || nil ))
-    keepalive_timeout: (( meta.ha_proxy.keepalive_timeout || nil ))
-    request_timeout: (( meta.ha_proxy.request_timeout || nil ))
-    queue_timeout: (( meta.ha_proxy.queue_timeout || nil ))
-    backend_servers: (( jobs.api_z1.networks.cf1.static_ips jobs.api_z2.networks.cf2.static_ips ))
 
   ccdb:
     address: (( jobs.data.networks.cf1.static_ips.[0] ))
