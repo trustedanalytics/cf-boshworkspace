@@ -23,6 +23,7 @@ templates:
   - cf-no-ssl.yml
   - cf-secrets.yml
   - tiny/cf-use-nfs.yml
+  - tiny/cf-use-nginx.yml
   - cf-networking.yml
   - cf-project-login.yml
   - tiny/cf-runners-aws-tiny.yml

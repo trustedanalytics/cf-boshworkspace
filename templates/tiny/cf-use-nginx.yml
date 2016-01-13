@@ -1,0 +1,3 @@
+properties:
+  logger_endpoint:
+    port: 443
