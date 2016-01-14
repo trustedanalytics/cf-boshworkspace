@@ -29,8 +29,9 @@ templates:
   - tiny/cf-runners-aws-tiny.yml
 
 stemcells:
-  - name: bosh-aws-xen-ubuntu-trusty-go_agent
-    version: 2941
+  - name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: 3177
+    light: true
 
 meta:
   domain: run.CF_DOMAIN
