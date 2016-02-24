@@ -20,6 +20,7 @@ templates:
   - cf/cf-infrastructure-aws.yml
   - cf-properties.yml
   - parallel.yml
+  - compilation.yml
   - cf-no-ssl.yml
   - cf-secrets.yml
   - tiny/cf-use-nfs.yml
