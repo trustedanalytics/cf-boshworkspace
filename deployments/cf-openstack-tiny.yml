@@ -28,7 +28,6 @@ templates:
   - cf/cf-infrastructure-openstack.yml
   - cf-properties.yml
   - parallel.yml
-  - cf-no-ssl.yml
   - cf-secrets.yml
   - tiny/cf-use-nfs.yml
   - tiny/cf-use-haproxy.yml

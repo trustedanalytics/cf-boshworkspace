@@ -23,7 +23,7 @@ properties:
     disk_mb: 860000
     memory_mb: 7500
   login:
-    protocol: http
+    protocol: https
 
   uaa:
     scim:
